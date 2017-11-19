@@ -54,6 +54,7 @@ public class PriorityQ<T extends Comparable<T>>
         if (endPosition == 1) {
             T temp = (T)elements[0];
             elements[0] = null;
+            endPosition--;
             return temp;
         }
         T temp = (T)elements[0];
