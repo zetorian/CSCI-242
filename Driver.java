@@ -58,6 +58,10 @@ public class Driver
 			vertexFileName = args[1];
 			dataFileName = args[0];
 		}
+		if (args.length == 1)
+		{
+			dataFileName = args[0];
+		}
 		
 		//initializing the adjacency list
 		list = new AdjacencyList<String>();
