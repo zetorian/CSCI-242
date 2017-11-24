@@ -48,7 +48,7 @@ public class Driver
 		String vertexFileName = "DATA-FINAL-F17-verticies.csv";
 		
 		
-		String dataFileName = "DATA-FINAL-F17.csv"; //the data file that will actually be parsed
+		String dataFileName = "DATA-FINAL-F17.txt"; //the data file that will actually be parsed
 		
 		//WIP: this conditional will parse args, if we need to specify an alternate input(s).
 		// as this is not required, I only plan to finish it if I have extra time, it would however
