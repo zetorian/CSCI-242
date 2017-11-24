@@ -24,7 +24,10 @@ public class Driver
 		
 		//please add code below this line
 		
-		
+		//Code for part 3
+		//Just prints out the data for now; we'll have to add a printwriter thing later.
+		AdjacencyList<String> mst = minimumSpanningTree();
+		System.out.println(mst);
 		
 		
 		
@@ -93,4 +96,58 @@ public class Driver
 		
 		System.out.println("\nloaded " + i + " lines of data successfully");
 	}
+	
+	/**
+     * Finds the Minimum Spanning Tree of the supplied AdjacencyList and returns it as a different
+     * AdjacencyList.<br><br>
+     * 
+     * The algorithm used here is Prim's algorithm (Prim/Jarník)
+     */
+    public static AdjacencyList minimumSpanningTree() {
+        AdjacencyList<String> mst = list.deepCopy();
+        
+        mst.setDValuesTo(Integer.MAX_VALUE);
+        mst.setFlagsTo(true);  //All vertices in the priority queue are true.
+        
+        mst.iterator().next().d = 0;
+        
+        HashSet<Edge> edgeSet = new HashSet<Edge>();
+        PriorityQ<Vertex<String>> Q = new PriorityQ<Vertex<String>>();
+        
+        for (Vertex v : mst) {
+            Q.add(v);
+        }
+        
+        while (!Q.isEmpty()) {
+            Vertex<String> current = Q.poll();
+            current.flag = false;
+            for (Edge e : current) {
+                //!e.end.flag means the item is not in the priority queue
+                if (!e.end.flag && e.weight == current.d) {
+                    edgeSet.add(e);
+                    break;  //If multiple paths with the same minimum weight exist, we should only choose one.
+                }
+            }
+            
+            for (Edge e : current) {
+                if (e.end.flag && e.weight < e.end.d) {
+                    e.end.d = e.weight;
+                    Q.decreaseKey(e.end);
+                }
+            }
+        }
+        
+        /*What's left from he big while loop above is a set of all of the edges that make up the 
+          minimum spanning tree.  Now, we have to construct a tree from those edges.*/
+        
+        for (Vertex v : mst) { //Clears out all of the edges, leaving only the vertices
+            v.edges = null;
+        }
+
+        for (Edge e : edgeSet) { //Builds the MST from the edges specified by Prim's algorithm.
+            e.start.addEdgeTo(e.end, e.weight);
+        }
+        
+        return mst;
+    }
 }
