@@ -25,9 +25,7 @@ public class Driver
 		//please add code below this line
 		
 		//Code for part 3
-		//Just prints out the data for now; we'll have to add a printwriter thing later.
-		AdjacencyList<String> mst = minimumSpanningTree();
-		System.out.println(mst);
+		writeMSTToFile(minimumSpanningTree(), "output3.txt");
 		
 		
 		
@@ -149,5 +147,41 @@ public class Driver
         }
         
         return mst;
+    }
+    
+        /**
+     * Writes all of the data for an MST out to a file.
+     * 
+     * The data written out is in the following format.<br>
+     * The toString of the AdjacencyList (the graph)<br>;
+     * The message "The total number of edges is: " followed by that value.<br>
+     * The message "The total weight of the edges is: " followed by that value.<br>
+     */
+    public static void writeMSTToFile(AdjacencyList<String> mst, String fileName) {
+        PrintWriter writer = null;
+        
+        try {
+            writer = new PrintWriter(new File(fileName));
+        } catch (Exception e) {
+            System.err.println("An error has been encountered when writing " + fileName + " to a file.");
+            System.err.println("The error is: " + e.getMessage() + "\n");
+            return;
+        }
+        
+        writer.println(mst + "\n");
+        
+        int numEdges = 0;
+        int weightEdges = 0;
+        for (Vertex<String> v : mst) {
+            for (Edge e : v) {
+                numEdges++;
+                weightEdges += e.weight;
+            }
+        }
+        
+        writer.println("The total number of edges is: " + numEdges + "\n");
+        writer.print("The total weight of the edges is: " + weightEdges);
+        
+        writer.close();
     }
 }
