@@ -1,5 +1,9 @@
 MST code has been added.
 
+---------------------
+I've put new updates toward the top of the README file so it's easier to see the them.
+--------------------
+
 Horray for the project!
 
 The PriorityQ class had a bug with its isEmpty() method; that has been fixed.
