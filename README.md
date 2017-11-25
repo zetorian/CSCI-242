@@ -1,3 +1,7 @@
+UPDATE: 11/25/17
+I've written a "write to file" method for the MST (minimum spanning tree).  Since our outputs for each case are so different, I would suggest having a write to file method for each case.  In addition, I've modified the main method to automatically generate the output3.txt file.  I suggest naming the ouput files outputX.txt, where X is the problem number (1 for DFS, 2 for DFS, 3 for MST, and 4 for Dijkstra/SSSP).  It may also be convinient for you guys to print stuff out in the middle of executing your algorithm so you don't have to save intermediate values in some data structure.
+
+UPDATE: 11/23/17
 MST code has been added.
 
 ---------------------
