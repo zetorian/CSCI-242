@@ -179,8 +179,8 @@ public class Driver
             }
         }
         
-        writer.println("The total number of edges is: " + numEdges + "\n");
-        writer.print("The total weight of the edges is: " + weightEdges);
+        writer.println("The total number of edges is: " + numEdges / 2 + "\n");
+        writer.print("The total weight of the edges is: " + weightEdges / 2);
         
         writer.close();
     }
