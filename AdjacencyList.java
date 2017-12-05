@@ -247,5 +247,11 @@ public class AdjacencyList<T> implements Iterable<Vertex<T>>
                 throw new NoSuchElementException();
             return vertices[position++];   //Note that this uses a postfix increment operator.
         }                                  //This means "position" is used, then incremented.
+        
+        /**
+         * This is a dummy method.  It is not supported in this implementation of the the iterator, but certain compilers
+         * require a remove method.
+         */
+        public void remove() {}
     }
 }
