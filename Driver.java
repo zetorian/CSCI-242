@@ -189,9 +189,15 @@ public class Driver
      * This is the algorithm to find the single source shortest path using Dijkstra's algorithm
     */
     
-    public static void SSSP(String startValue, String goalValue)
+    public static Vertex[] SSSP(String startValue, String goalValue)
     {
+    	if(startValue.equals(goalValue))
+    	{
+    		System.err.println("something went very very wrong..."); //hooray for unhelpful error messages!
+    		return null;
+    	}
     	AdjacencyList<String> sssp = list.deepCopy();
+    	sssp.setFlagsTo(false);
     	sssp.setDValuesTo(Integer.MAX_VALUE);
     	
     	Vertex start = sssp.find(startValue);
@@ -199,13 +205,49 @@ public class Driver
     	
     	//initialize the heap implimented priority queue
     	PriorityQ<Vertex<String>> q = new PriorityQ<>();
-    	for (Vertex v : sssp)
+    	for (Vertex<String> v : sssp)
     	{
     		q.add(v);
     	}
     	q.poll(); //remove the start node from the Queue
     	
-    	
+    	Edge working = start.edges;
+    	Vertex<String> curr = start;
+    	boolean pathFound = false;
+    	while(!pathFound)
+    	{
+    		while(working != null) //work through all the edges of the currect vertex and calculate their relative weights
+    		{
+    			Vertex end = working.end;
+    			if(end.flag == false && end.d > (curr.d + working.weight))
+    			{
+    				end.d = curr.d + working.weight;
+    				q.decreaseKey(end);
+    				end.prev = curr;
+    			}
+    			working = working.next;
+    		}
+    		curr.flag = true;
+    		
+    		curr = q.poll();
+    		if(curr.name.equals(goalValue))
+    		{
+    			return recurPath(curr);
+    		}
+    	}
+    	return null;
+    }
+    
+    private static Vertex[] recurPath(Vertex v)
+    {
+    	ArrayList<Vertex> list = new ArrayList<Vertex>();
+    	list.add(v);
+    	while(v.prev != null)
+    	{
+    		v = v.prev;
+    		list.add(v);
+    	}
+    	return (Vertex[])(list.toArray());
     }
     
     public static void writeSSSPToFile(String fileName)
