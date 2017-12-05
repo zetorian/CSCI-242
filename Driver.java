@@ -244,11 +244,11 @@ public class Driver
     		v = v.prev;
     		list.add(v);
     	}
+    	
     	Vertex[] arr = new Vertex[list.size()];
-    	int i = 0;
-    	for (Vertex v2 : list)
+    	for (int i = arr.length-1; i >= 0; i--)
     	{
-    		arr[i++] = v2;
+    		arr[i] = list.get(i);
     	}
     	return arr;
     }
