@@ -122,5 +122,11 @@ public class Vertex<T> implements Iterable<Edge>, Comparable<Vertex<T>>
             cur = cur.next;
             return temp;
         }
+        
+        /**
+         * This is a dummy method.  It is not supported in this implementation, but certain people's compilers require it
+         * be there.
+         */
+        public void remove() {}
     }
 }
