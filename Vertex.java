@@ -6,7 +6,8 @@
  * It's initialized to true.
  * 
  * @author Luke Dramko
- * @version 1.0
+ * @author Ben-Luke Metzger
+ * @version 1.1
  */
 
 import java.util.*;
@@ -16,6 +17,7 @@ public class Vertex<T> implements Iterable<Edge>, Comparable<Vertex<T>>
 {
     public T name;
     public int d; //d represents the shortest path in Dijkstra's algorithm.
+    public Vertex<T> prev = null; //a sentinal node to hold the previous node traversed for Dijkstra's, initialized to null so as to not take up extra space during other runs
     public boolean flag; //a boolean flag is frequently useful in many graph-traversing algorithms
     public Edge edges;
 

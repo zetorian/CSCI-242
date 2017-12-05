@@ -27,8 +27,8 @@ public class Driver
 		//Code for part 3
 		writeMSTToFile(minimumSpanningTree(), "output3.txt");
 		
-		
-		
+		//Code for part 4 (dijkstra's)
+		writeSSSPToFile("output4.txt");
 		
 	}
 	
@@ -37,8 +37,8 @@ public class Driver
 	 * a public adjacency list which can then be manipulated by the various algorithms. <br><br>
 	 * 
 	 * It works by parsing a tab delimited data file of the form (vertex1    vertex2    weight)
-	 * the data is read line by line and put into an array which is then fed to AdjacencyList's add method
-	 * if an exception is thrown, by a title line perhaps, the line is skipped and noted on System.err, in most
+	 * the data is read line by line and put into an array which is then fed to AdjacencyList's add method,
+	 * if an exception is thrown (by a title line perhaps) then the line is skipped and noted on System.err, in most
 	 * cases this can be safely ignored, just make sure to check that the correct number of data lines were loaded <br><br>
 	 *
 	 * If you need to make any changes to this method, please document them well as they will affect everyone's code.
@@ -183,5 +183,33 @@ public class Driver
         writer.print("The total weight of the edges is: " + weightEdges / 2);
         
         writer.close();
+    }
+    
+    /*
+     * This is the algorithm to find the single source shortest path using Dijkstra's algorithm
+    */
+    
+    public static void SSSP(String startValue, String goalValue)
+    {
+    	AdjacencyList<String> sssp = list.deepCopy();
+    	sssp.setDValuesTo(Integer.MAX_VALUE);
+    	
+    	Vertex start = sssp.find(startValue);
+    	start.d = 0;
+    	
+    	//initialize the heap implimented priority queue
+    	PriorityQ<Vertex<String>> q = new PriorityQ<>();
+    	for (Vertex v : sssp)
+    	{
+    		q.add(v);
+    	}
+    	q.poll(); //remove the start node from the Queue
+    	
+    	
+    }
+    
+    public static void writeSSSPToFile(String fileName)
+    {
+    	
     }
 }
