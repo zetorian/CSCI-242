@@ -12,6 +12,8 @@ public class Edge
     //Used to maintain a liked list of edges from a particular vertex.
     public Edge next;
     //Used to keep track of the vertices this edge connects
+    //Keeps track of the status 
+    public String type = "untouched";
     public Vertex start;
     public Vertex end;  //This is the destination of the edge.
     int weight;
