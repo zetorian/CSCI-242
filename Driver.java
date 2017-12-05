@@ -76,7 +76,7 @@ public class Driver
 			input = new Scanner(inputFile);
 		} catch (FileNotFoundException e) {
 			System.err.println("ERROR: cannot find data file: " + dataFileName + ", please try a different data file.");
-			System.exit(-1);
+			System.exit(-1); //quit because no data was found
 		}
 		int i = 1;
 		while(input.hasNext())
@@ -211,12 +211,10 @@ public class Driver
     	}
     	q.poll(); //remove the start node from the Queue
     	
-    	Edge working = start.edges;
     	Vertex<String> curr = start;
-    	boolean pathFound = false;
-    	while(!pathFound)
+    	while(!q.isEmpty())
     	{
-    		while(working != null) //work through all the edges of the currect vertex and calculate their relative weights
+    		for (Edge working : curr) //work through all the edges of the currect vertex and calculate their relative weights
     		{
     			Vertex end = working.end;
     			if(end.flag == false && end.d > (curr.d + working.weight))
@@ -225,7 +223,6 @@ public class Driver
     				q.decreaseKey(end);
     				end.prev = curr;
     			}
-    			working = working.next;
     		}
     		curr.flag = true;
     		
@@ -247,11 +244,93 @@ public class Driver
     		v = v.prev;
     		list.add(v);
     	}
-    	return (Vertex[])(list.toArray());
+    	Vertex[] arr = new Vertex[list.size()];
+    	int i = 0;
+    	for (Vertex v2 : list)
+    	{
+    		arr[i++] = v2;
+    	}
+    	return arr;
     }
     
     public static void writeSSSPToFile(String fileName)
     {
+    	PrintWriter writer = null;
+    	try {
+    		writer = new PrintWriter(fileName);
+    	} catch (Exception e) {
+    		System.err.println("ERROR WHILE PRINTING: " + e.getMessage());
+    	}
     	
+    	Vertex[] path1 = SSSP("Grand Forks","Seattle");
+    	int distance1 = findPathDistance(path1);
+    	Vertex[] path2 = SSSP("Seattle","Los Angeles");
+    	int distance2 = findPathDistance(path2);
+    	Vertex[] path3 = SSSP("Los Angeles","Dallas");
+    	int distance3 = findPathDistance(path3);
+    	Vertex[] path4 = SSSP("Dallas","Miami");
+    	int distance4 = findPathDistance(path4);
+    	Vertex[] path5 = SSSP("Miami","Boston");
+    	int distance5 = findPathDistance(path5);
+    	Vertex[] path6 = SSSP("Boston","Chicago");
+    	int distance6 = findPathDistance(path6);
+    	Vertex[] path7 = SSSP("Chicago","Grand Forks");
+    	int distance7 = findPathDistance(path7);
+    	
+    	writer.println("SSSP:\n");
+    	writer.println(stringifyVertexes(path1));
+    	writer.println("route1 distance: " + distance1 + "\n");
+    	
+    	writer.println(stringifyVertexes(path2));
+    	writer.println("route2 distance: " + distance2 + "\n");
+    	
+    	writer.println(stringifyVertexes(path3));
+    	writer.println("route3 distance: " + distance3 + "\n");
+    	
+    	writer.println(stringifyVertexes(path4));
+    	writer.println("route4 distance: " + distance4 + "\n");
+
+    	writer.println(stringifyVertexes(path5));
+    	writer.println("route5 distance: " + distance5 + "\n");
+
+    	writer.println(stringifyVertexes(path6));
+		writer.println("route6 distance: " + distance6 + "\n");
+		
+    	writer.println(stringifyVertexes(path7));
+		writer.println("route7 distance: " + findPathDistance(path7) + "\n");
+    	
+    	writer.println("Total distance of routes: " + (distance1 + distance2 + distance3 + distance4 + distance5 + distance6 + distance7));
+    	writer.close();
+    }
+    
+    private static String stringifyVertexes(Vertex[] vs)
+    {
+    	if(vs.length == 0)
+    	{
+    		return "";
+    	}
+    	
+    	String str = ""; 
+    	str += vs[0].name;
+    	for (int i = 1; i < vs.length; i++)
+    	{
+    		str += " " + i + "-> " + vs[i].name;
+    	}
+    	return str;
+    }
+    
+    private static int findPathDistance(Vertex[] vs)
+    {
+    	if(vs.length == 0)
+    	{
+    		return -1;
+    	}
+    	
+    	int tmp = vs[0].d;
+    	for (int i = 1; i < vs.length; i++)
+    	{
+    		tmp += vs[i].d;
+    	}
+    	return tmp;
     }
 }
