@@ -246,9 +246,10 @@ public class Driver
     	}
     	
     	Vertex[] arr = new Vertex[list.size()];
+	int j = 0;
     	for (int i = arr.length-1; i >= 0; i--)
     	{
-    		arr[i] = list.get(i);
+    		arr[j++] = list.get(i);
     	}
     	return arr;
     }
