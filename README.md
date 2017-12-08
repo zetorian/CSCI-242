@@ -1,3 +1,5 @@
+UPADATE: 12/8/17  All code final.  Note that Edge has been updated; BFS and DFS WILL NOT WORK without the new Edge!
+
 UPDATE: 12/5/17
 I have now added the majority of code for Dijekstra's algorithm, using the same write to file format as MST
  - Ben
