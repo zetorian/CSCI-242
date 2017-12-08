@@ -60,4 +60,30 @@ public class Edge
     public String toString() {
         return "(" + start.name + ", " + weight + ", " + end.name + ")";
     }
+    
+    /**
+     * The equals method compares the hash codes of the two edges, returning true if they are the same.<br>
+     * There is an incredibly small chance that the two hash codes are identical, but for any small data
+     * set, that should not be the case.
+     */
+    public boolean equals(Edge e) {
+        return hashCode() == e.hashCode();
+    }
+    
+    /**
+     * Computes the object's hash code, which can be used by various hash-table based dictionaries.<br><br>
+     * 
+     * The hash code can be computed one of two ways, depending on if the name of the vertex is comparable
+     * or not.  
+     */
+    public int hashCode() {
+        if (start.name instanceof Comparable) {
+            if (((Comparable)start.name).compareTo(((Comparable)end.name)) > 0) {
+                return (start.name.hashCode() * 7) + (end.name.hashCode() * 11);
+            } else {
+                return (end.name.hashCode() * 7) + (start.name.hashCode() * 11);
+            }
+        } else 
+           return super.hashCode();
+    }
 }
