@@ -24,6 +24,12 @@ public class Driver
 		
 		//please add code below this line
 		
+		//Code for part 1
+		DFSTree.DFSSearch(list);
+		
+		//Code for part 2
+		BFS(list, list.find("Grand Forks"), "output2.txt");
+		
 		//Code for part 3
 		writeMSTToFile(minimumSpanningTree(), "output3.txt");
 		
@@ -94,6 +100,63 @@ public class Driver
 		
 		System.out.println("\nloaded " + i + " lines of data successfully");
 	}
+	
+	/**
+	 * Performs Breadth First Search on a given graph and writes several statistics of that search out
+	 * to a file of a given file name.
+	 */
+	public static void BFS(AdjacencyList<String> li, Vertex start, String fileName) {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(new File(fileName));
+        } catch (Exception e) {
+            System.err.println("Error " + e.getMessage());
+            return;
+        }
+        
+        li.setDValuesTo(Integer.MAX_VALUE);
+        LinkedList<Vertex> oldList = new LinkedList<Vertex>();
+        LinkedList<Vertex> newList = new LinkedList<Vertex>();
+        start.d = 0;
+        oldList.add(start);
+        
+        HashMap<Integer, Edge> discovery = new HashMap<Integer, Edge>();
+        HashMap<Integer, Edge> cross = new HashMap<Integer, Edge>();
+        int totalWeight = 0;
+        
+        writer.println("Towns Traversed, in Order: ");
+        do {
+            newList = new LinkedList<Vertex>();
+            for (Vertex<String> v : oldList) {
+                writer.println(v.name);
+                for (Edge e : v) {
+                    if (e.end.d > v.d + 1) {
+                        e.end.d = v.d + 1;
+                        newList.add(e.end);
+                        discovery.put(e.hashCode(), e);
+                        totalWeight += e.weight;
+                    } else if (e.end.d == v.d) {
+                        cross.put(e.hashCode(), e);
+                    }
+                }
+            }
+            oldList = newList;
+        } while (!newList.isEmpty());
+        
+        writer.println("\n\nTotal Weight of Discovery Edges: " + totalWeight);
+        
+        writer.println("\n\n--Discovery Edges--");
+        for (Integer i : discovery.keySet()) {
+            writer.println(discovery.get(i));
+        }
+        
+        writer.println("\n\n--Cross Edges--");
+        for (Integer i : cross.keySet()) {
+            writer.println(cross.get(i));
+        } 
+        
+        writer.close();
+    }
 	
 	/**
      * Finds the Minimum Spanning Tree of the supplied AdjacencyList and returns it as a different
@@ -246,7 +309,7 @@ public class Driver
     	}
     	
     	Vertex[] arr = new Vertex[list.size()];
-	int j = 0;
+	    int j = 0;
     	for (int i = arr.length-1; i >= 0; i--)
     	{
     		arr[j++] = list.get(i);
