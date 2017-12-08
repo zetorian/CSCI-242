@@ -4,13 +4,24 @@ import java.io.*;
 public class DFSTree 
 {
 	private static int total = 0;
-	private static File file = new File("DFSOut");
+	private static File file = new File("output1.txt");
 	private static PrintWriter output = null;
+	private static HashMap<Integer, Edge> discovery = new HashMap<Integer, Edge>();
+	private static HashMap<Integer, Edge> back = new HashMap<Integer, Edge>();
 	
-	public static void DFSSearch(AdjacencyList<String> t)throws FileNotFoundException
+	/**
+	 * Sets up the recursive DFS method, the PrintWriter, and generally handles the running of DFS.
+	 * 
+	 * This is the method that should be called if you want to do DFS.
+	 */
+	public static void DFSSearch(AdjacencyList<String> t)
 	{
-		output = new PrintWriter(file);
-		t.setFlagsTo(false);
+	    try {
+		   output = new PrintWriter(file);
+		} catch (Exception e) {
+		   System.err.println("Error in creating output file: " + e.getMessage());    
+		}
+		
 		output.println("Grand Forks");
 		DFS(t.find("Grand Forks"));
 		output.println("\n\nTotal Weight :"+total);
@@ -20,53 +31,47 @@ public class DFSTree
 		output.close();
 	}
 	
-	public static void DFS(Vertex<String> start)
+	private static void DFS(Vertex<String> start)
 	{
-		start.flag = true;
+		start.flag = false;
 		for(Edge e : start)
 		{
 			Vertex<String> other = e.end;
-			if(!other.flag)
+			if(other.flag)
 			{
-				e.type = "D";
+			    discovery.put(e.hashCode(), e);
 				total += e.weight;
 				output.println(other.name);
 				DFS(other);
 			}
 			else
 			{
-					e.type = "B";
+			    if (!discovery.containsValue(e)) {
+			        back.put(e.hashCode(), e);
+			    }
 			}
 		}
 	}
 	
-	public static void printD(AdjacencyList<String> t)
+	/**
+	 * Prints the discovery edges to a file
+	 */
+	private static void printD(AdjacencyList<String> t)
 	{
 		output.println("\n\nDiscovery Edges");
-		for(Vertex<String> v : t)
-		{
-			for(Edge e : v)
-			{
-				if(e.type.equals("D"))
-					output.println(e.toString());
-				else if(e.type.equals("untouched"))
-					output.println("ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR");
-			}
+		for (Integer i : discovery.keySet()) {
+		    output.println(discovery.get(i));
 		}
 	}
 	
-	public static void printB(AdjacencyList<String> t)
+	/**
+	 * Prints the back edges to a file
+	 */
+	private static void printB(AdjacencyList<String> t)
 	{
 		output.println("\n\nBack Edges");
-		for(Vertex<String> v : t)
-		{
-			for(Edge e : v)
-			{
-				if(e.type.equals("B"))
-					output.println(e.toString());
-				else if(e.type.equals("untouched"))
-					output.println("ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR");
-			}
+		for (Integer i : discovery.keySet()) {
+		    output.println(discovery.get(i));
 		}
 	}
 }
